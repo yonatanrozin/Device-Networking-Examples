@@ -1,0 +1,15 @@
+{
+  "name": "connected-devices-examples",
+  "version": "1.0.0",
+  "description": "A collection of basic code samples to help incorporate wireless technologies in interactive applications",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx node-red"
+  },
+  "author": "Yonatan Rozin",
+  "license": "MIT",
+  "dependencies": {
+    "node-red": "^4.0.9",
+    "node-red-contrib-osc": "^1.1.0"
+  }
+}
