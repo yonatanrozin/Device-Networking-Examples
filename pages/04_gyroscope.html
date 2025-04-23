@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HTML WebSocket</title>
+        <script>
+            const socket = new WebSocket("/messages");
+            function handlePad(event) {
+                socket.send(JSON.stringify([event.target.id, event.layerX, event.layerY]));
+            }
+            function handleButton(event) {
+                socket.send(JSON.stringify([event.target.id, event.buttons]));
+            }
+            function handleSlider(event) {
+                socket.send(JSON.stringify([event.target.id, Number(event.target.value)]))
+            }
+
+            async function startGyroscope() {
+                if (!window.DeviceOrientationEvent || !window.DeviceOrientationEvent.requestPermission) return window.alert("Device orientation unavailable.");
+                await window.DeviceOrientationEvent.requestPermission().catch(window.alert);
+                window.addEventListener("deviceorientation", function({alpha, beta, gamma}) {
+                    socket.send(JSON.stringify(["orientation", alpha, beta, gamma]));
+                });
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+                document.body.addEventListener("click", startGyroscope, {once: true});
+            });
+
+        </script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100vw;
+                touch-action: none; 
+
+                >* {
+                    position: absolute;
+                    border: 5px solid;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button id="pad_1" onpointermove="handlePad(event)" 
+            style="width: 200px; height: 200px; left: 30px; top: 30px;"></button>
+        <button id="button_1" onpointerdown="handleButton(event)" onpointerup="handleButton(event)"
+            style="width: 100px; height: 100px; left: 100px; top: 250px"></button>
+        <input id="slider_1" type="range" min="0" max="1" step=".01" oninput="handleSlider(event)"
+            style="width: 300px; rotate: 0deg"/>
+
+        <!-- Try creating more interactive elements here! Be sure to give each one an id and callback and style its width, height and position-->
+    </body>
+</html>
