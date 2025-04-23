@@ -3,7 +3,7 @@
     <head>
         <title>HTML WebSocket</title>
         <script>
-            const socket = new WebSocket("ws://127.0.0.1:1880/messages");
+            const socket = new WebSocket("/messages");
             function handlePad(event) {
                 socket.send(JSON.stringify([event.target.id, event.layerX, event.layerY]));
             }
@@ -11,7 +11,7 @@
                 socket.send(JSON.stringify([event.target.id, event.buttons]));
             }
             function handleSlider(event) {
-                socket.send(JSON.stringify([event.target.id, Number(event.target.value)]))
+                socket.send(JSON.stringify([event.target.id, Number(event.target.value)]));
             }
         </script>
         <style>

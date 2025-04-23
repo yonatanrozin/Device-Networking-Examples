@@ -3,7 +3,7 @@
     <head>
         <title>HTML WebSocket</title>
         <script>
-            const socket = new WebSocket("ws://127.0.0.1:1880/messages");
+            const socket = new WebSocket("/messages");
             function sendMsg() {
                 socket.send(Math.random());
             }
