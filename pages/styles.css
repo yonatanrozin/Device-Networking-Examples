@@ -1,0 +1,11 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vw;
+    touch-action: none; 
+
+    >* {
+        position: absolute;
+        border: 5px solid;
+    }
+}
