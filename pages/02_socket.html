@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HTML WebSocket</title>
+        <script>
+            const socket = new WebSocket("ws://127.0.0.1:1880/messages");
+            function sendMsg() {
+                socket.send(Math.random());
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Welcome!</h1>
+        <button onclick="sendMsg()">Send message!</button>
+    </body>
+</html>
