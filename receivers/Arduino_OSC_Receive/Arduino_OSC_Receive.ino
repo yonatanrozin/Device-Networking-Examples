@@ -17,7 +17,7 @@
 const char WIFI_SSID[] = ""; //put WiFi network name here
 const char WIFI_PASS[] = ""; //put WiFi password here
 
-//choose a port # - make sure your sender device
+//choose a port # - make sure your sender device uses it!
 const long PORT = 4242; 
 
 Servo servo; 

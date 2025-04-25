@@ -17,7 +17,7 @@
 
         <script>
 
-            async function startCameraStream() {
+            async function startMediaStream() {
 
                 try {
                     
@@ -29,11 +29,11 @@
                             facingMode: "user" // "user" for front-facing camera or "environment" for rear camera
                         },
                         // uncomment audio to enable microphone stream. Watch out for feedback!!!
-                        // audio: { 
-                        //     echoCancellation: false,
-                        //     noiseSuppression: false,
-                        //     autoGainControl: false
-                        // } 
+                        audio: { 
+                            echoCancellation: false,
+                            noiseSuppression: false,
+                            autoGainControl: false
+                        } 
                     });
 
                     stream.getTracks().forEach(t => {console.log(t), peer.addTrack(t, stream)});
@@ -51,7 +51,7 @@
             }
 
             window.addEventListener("DOMContentLoaded", () => {
-                document.body.addEventListener("click", () => startCameraStream().then(RTCConnect), {once: true});
+                document.body.addEventListener("click", () => startMediaStream().then(RTCConnect), {once: true});
             });
 
         </script>

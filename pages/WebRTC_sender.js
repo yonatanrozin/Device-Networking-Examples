@@ -6,7 +6,6 @@ const peerSocket = new WebSocket("/RTC_sender");
 
 peerSocket.addEventListener("message", async (msg) => {
     const [eventName, data] = JSON.parse(msg.data);
-    console.log(eventName, data);
 
     if (eventName === "answer") {
         console.log("Answer received.");
@@ -23,7 +22,6 @@ peer.addEventListener("icecandidate", ({ candidate }) => {
         peerSocket.send(JSON.stringify(["iceCandidate", candidate]));
     }
 });
-
 
 async function RTCConnect() {
     console.log("Sending offer.");
