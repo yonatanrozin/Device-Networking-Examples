@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebRTC Sender</title>
+        <link rel="stylesheet" href="./styles.css" >
+        <script src="./WebRTC_sender.js"></script>
+        <style>
+            video {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                object-fit: contain;
+            }
+        </style>
+
+        <script>
+
+            async function startCameraStream() {
+
+                try {
+                    
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: { 
+                            // reduce ideal video resolution values to potentially improve performance 
+                            width: { ideal: 4096 }, 
+                            height: { ideal: 2160 },
+                            facingMode: "user" // "user" for front-facing camera or "environment" for rear camera
+                        },
+                        // uncomment audio to enable microphone stream. Watch out for feedback!!!
+                        // audio: { 
+                        //     echoCancellation: false,
+                        //     noiseSuppression: false,
+                        //     autoGainControl: false
+                        // } 
+                    });
+
+                    stream.getTracks().forEach(t => {console.log(t), peer.addTrack(t, stream)});
+                    
+                    const video = document.createElement("video");
+                    video.autoplay = true;
+                    
+                    video.srcObject = stream;
+                    video.width = 640;
+                    video.height = 480;
+                                        
+                    document.getElementById("cam-message")?.remove();
+
+                } catch (e) {window.alert(e)}
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+                document.body.addEventListener("click", () => startCameraStream().then(RTCConnect), {once: true});
+            });
+
+        </script>
+    </head>
+    <body>
+        <h1 id="cam-message">Tap screen to enable camera access</h1>
+    </body>
+</html>
