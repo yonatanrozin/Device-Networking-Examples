@@ -3,8 +3,8 @@ const peerConfiguration = {
 }
 
 async function RTCConnect() {
+    const peerSocket = new WebSocket("wss://127.0.0.1:1880/RTC_receiver");
     const peer = new RTCPeerConnection(peerConfiguration);
-    const peerSocket = new WebSocket("/RTC_receiver");
     const video = document.querySelector("video");
 
     const stream = new MediaStream();
