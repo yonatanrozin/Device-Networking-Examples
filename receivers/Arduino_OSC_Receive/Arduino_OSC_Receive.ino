@@ -1,18 +1,29 @@
+/*
+  Simple Arduino OSC Receiver
+  Yonatan Rozin
+
+  Enter WiFi network details below
+  Choose a port #
+
+  Run sketch, check serial monitor for Arduino's local IP address
+  Use the IP address and port # to send UDP messages to this Arduino
+*/
+
 #include <WiFiNINA.h>
 #include <OSCBundle.h>
 #include <Servo.h>
-
-Servo servo; 
-
-WiFiUDP Udp;
 
 //these are case-sensitive!!
 const char WIFI_SSID[] = ""; //put WiFi network name here
 const char WIFI_PASS[] = ""; //put WiFi password here
 
-int status = WL_IDLE_STATUS;
+//choose a port # - make sure your sender device
+const long PORT = 4242; 
 
-const long PORT = 4242;
+Servo servo; 
+WiFiUDP Udp;
+
+int status = WL_IDLE_STATUS;
 
 void setup() {
 
