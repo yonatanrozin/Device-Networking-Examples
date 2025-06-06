@@ -4,9 +4,9 @@
   "description": "A collection of basic code samples to help incorporate wireless technologies in interactive applications",
   "main": "index.js",
   "scripts": {
-    "start": "npx node-red",
+    "start": "npx node-red ./nodes.json",
     "get-cert": "npx mkcert create-ca --key certs/ca.key --cert certs/ca.crt && npx mkcert create-cert --ca-key certs/ca.key --ca-cert certs/ca.crt --key certs/cert.key --cert certs/cert.crt",
-    "start-secure": "npx node-red --settings ./node-red-settings.js"
+    "start-secure": "npx node-red --settings ./node-red-settings.js ./nodes.json"
   },
   "author": "Yonatan Rozin",
   "license": "MIT",
