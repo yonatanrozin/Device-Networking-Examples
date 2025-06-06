@@ -6,10 +6,10 @@
   Choose a port #
 
   Run sketch, check serial monitor for Arduino's local IP address
-  Use the IP address and port # to send UDP messages to this Arduino
+  Use the IP address and port # to send UDP to this Arduino
 */
 
-#include <WiFiNINA.h>
+#include <WiFiNINA.h> //you may need <WiFi.h> instead, depending on your board
 #include <OSCBundle.h>
 #include <Servo.h>
 
@@ -18,7 +18,7 @@ const char WIFI_SSID[] = ""; //put WiFi network name here
 const char WIFI_PASS[] = ""; //put WiFi password here
 
 //choose a port # - make sure your sender device uses it!
-const long PORT = 4242; 
+const long PORT = 1234; 
 
 Servo servo; 
 WiFiUDP Udp;
@@ -31,7 +31,7 @@ void setup() {
 
   Serial.begin(9600);
   if (!Serial) delay(2000);
-  servo.attach(A0);
+  servo.attach(4);
 
   Serial.println("Connecting to WiFi.");
   while (status != WL_CONNECTED) {
@@ -57,19 +57,22 @@ void loop(){
 
     if (!bundle.hasError()) {
       //route your OSC addresses here
-      bundle.dispatch("/pad_1", getPad);
-      bundle.dispatch("/button_1", getButton);
+      // "*" is a wildcard that matches ANY value at that address level
+      bundle.dispatch("/*/pad", getPad);
+      bundle.dispatch("/*/button", getButton);
     }
   }
 }
 
 void getPad(OSCMessage &msg){  
-  float val = msg.getFloat(0); //put argument index in here (counting from 0)
-  float mapped = map(val, 0, 500, 10, 170);
-  servo.write(mapped);
+
+  float x = msg.getFloat(0); //get first argument
+  float y = msg.getFloat(1); //get second argument
+  x = map(x, 0, 600, 10, 170); //scale range of values to a different range
+  servo.write(x);
 }
 
 void getButton(OSCMessage &msg){  
-  float val = msg.getFloat(0); //put argument index in here (counting from 0)
+  float val = msg.getFloat(0); 
   digitalWrite(LED_BUILTIN, val);
 }
