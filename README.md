@@ -14,7 +14,16 @@ A collection of simple code examples to help incorporate wireless technologies i
   - Run ```cd <path/to/folder>```. You can type the path manually or drag the folder into the terminal from a finder/file explorer window to paste the file path automatically!
   - Run ```npm install``` to install Node.js dependencies
 
- ## Run
+## Run
  - Navigate to project folder inside a terminal window (see installation steps above)
  - Run ```npm run start```
  - Open ```http://localhost:1880``` in a browser window of your choice
+
+## Setup HTTPS
+- In terminal window, from project folder:
+  - Run ```npm run get-cert```
+
+## Run HTTPS
+- In terminal window, from project folder: 
+  - Be sure setup HTTPS steps have been followed!
+  - Run ```npm run start-secure```
