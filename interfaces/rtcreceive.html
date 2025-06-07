@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebRTC Receiver</title>
+        <script >
+
+            const peerConfiguration = {
+                iceServers: [ { urls: [ 'stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302' ] } ]
+            }
+
+            async function RTCConnect() {
+                const peerSocket = new WebSocket(`wss://${window.location.host}/RTC_receiver`);
+                const peer = new RTCPeerConnection(peerConfiguration);
+                const video = document.querySelector("#rtc-player");
+
+                const stream = new MediaStream();
+                video.srcObject = stream;
+
+                peer.addEventListener("icecandidate", ({ candidate }) => {
+                    if (candidate) {
+                        console.log("Local ICE candidate fetched.");
+                        peerSocket.send(JSON.stringify(["iceCandidate", candidate]));
+                    }
+                });
+                
+                peerSocket.addEventListener("message", async (msg) => {
+                    const [eventName, data] = JSON.parse(msg.data);
+                    
+                    if (eventName === "offer") {
+                        console.log("Offer received.");
+                        await peer.setRemoteDescription(new RTCSessionDescription(data));
+                        const answer = await peer.createAnswer();
+                        await peer.setLocalDescription(answer);
+                        console.log("Sending answer.");
+                        peerSocket.send(JSON.stringify(["answer", answer]));
+                    }
+                    else if (eventName === "iceCandidate") {
+                        await peer.addIceCandidate(data);
+                    }
+                });
+                
+                peer.onsignalingstatechange = (e) => console.log(e.target.signalingState);
+                
+                peer.ontrack = async ({track}) => {
+                    stream.addTrack(track);
+                }
+            }
+
+            window.addEventListener("DOMContentLoaded", RTCConnect);
+
+        </script>
+        <style>
+            video {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body>
+        <video id="rtc-player" autoplay="" playsinline="" ></video>
+    </body>
+</html>

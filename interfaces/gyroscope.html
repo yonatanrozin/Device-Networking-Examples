@@ -3,9 +3,12 @@
     <head>
         <title>HTML WebSocket</title>
         <link rel="stylesheet" href="./styles.css" >
-        <script src="./socket_script.js"></script>
 
         <script>
+            const data = {}; 
+            const socket = new WebSocket("/messages");
+            function sendData() {socket.send(JSON.stringify(data))}
+            setInterval(sendData, 1000/60); //60 = "fps" - set as desired
 
             async function startMotionAndGyro() {
                 if (!window.DeviceOrientationEvent || !window.DeviceOrientationEvent.requestPermission) 
@@ -14,14 +17,15 @@
                     return window.alert("Device motion unavailable.");
                 await window.DeviceMotionEvent.requestPermission().catch(window.alert);
                 await window.DeviceOrientationEvent.requestPermission().catch(window.alert);
-                window.addEventListener("deviceorientation", function({alpha, beta, gamma}) {
-                    data.orientation = [alpha, beta, gamma];
+                
+                window.addEventListener("deviceorientation", function(event) {
+                    data.orientation = [event.alpha, event.beta, event.gamma];
                 });
-                window.addEventListener("devicemotion", function({rotationRate, acceleration}) {
-                    const {alpha, beta, gamma} = rotationRate;
-                    const {x, y, z} = acceleration;
-                    data.motion =  [x, y, z]
-                    data.rotation = [alpha, beta, gamma];
+                window.addEventListener("devicemotion", function(event) {
+                    const rotationRate = event.rotationRate;
+                    const acceleration = event.acceleration;
+                    data.motion = [acceleration.x, acceleration.y, acceleration.z]
+                    data.rotation = [rotationRate.alpha, rotationRate.beta, rotationRate.gamma];
                 });
                 document.getElementById("message").remove();
             }

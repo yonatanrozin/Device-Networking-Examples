@@ -14,8 +14,8 @@
 #include <Servo.h>
 
 //these are case-sensitive!!
-const char WIFI_SSID[] = ""; //put WiFi network name here
-const char WIFI_PASS[] = ""; //put WiFi password here
+const char WIFI_SSID[] = "sandbox370"; //put WiFi network name here
+const char WIFI_PASS[] = "+s0a+s03!2gether?"; //put WiFi password here
 
 //choose a port # - make sure your sender device uses it!
 const long PORT = 1234; 

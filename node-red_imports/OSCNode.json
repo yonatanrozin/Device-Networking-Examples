@@ -1,0 +1,23 @@
+[
+    {
+        "id": "b228e03f1531df42",
+        "type": "function",
+        "z": "0c44cd06203c0665",
+        "name": "Make OSC Bundle",
+        "func": "msg.payload = {packets: context.getOSCMsgs(msg.payload)}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "context.getOSCMsgs = (obj, path = \"/\" + msg._session.id) => {\n    const msgs = [];\n    for (const key in obj) {\n        const keyPath = path ? `${path}/${key}` : key;\n        if (Array.isArray(obj[key])) msgs.push({ address: keyPath, args: obj[key]});\n        else if (typeof obj[key] === \"object\") msgs.push(...context.getOSCMsgs(obj[key], keyPath));\n        else msgs.push({ address: keyPath, args: context.getOSCArgs(obj[key]) });\n    }\n    return msgs;\n}\n\ncontext.getOSCArgs = (args) => {\n    if (!Array.isArray(args)) args = [args];\n    return args.map((value) => {\n        const type = { \"boolean\": \"i\", \"number\": \"f\", \"string\": \"s\" }[typeof value];\n        return { type, value };\n    });\n}",
+        "finalize": "",
+        "libs": [],
+        "x": 210,
+        "y": 440,
+        "wires": [
+            [
+                "8ecd7204a2385ff5",
+                "d82b8e961c5edba5"
+            ]
+        ]
+    }
+]

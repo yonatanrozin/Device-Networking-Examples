@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Custom Touch Interface</title>
+        <link rel="stylesheet" href="./styles.css" >
+        <script>
+            const data = {}; 
+            const socket = new WebSocket("/messages");
+            function sendData() {socket.send(JSON.stringify(data))}
+            setInterval(sendData, 1000/60); //60 = "fps" - set as desired
+
+            function handlePad(event) { data[event.target.id] = [event.layerX, event.layerY] }
+            function handleButton(event) { data[event.target.id] = event.buttons }
+            function handleSlider(event) { data[event.target.id] = Number(event.target.value) }
+        </script>
+    </head>
+    
+    <body>
+        <div id="pad" onpointermove="handlePad(event)" 
+            style="width: 500px; height: 500px; left: 50px; top: 50px;"></div>
+        <button id="button" onpointerdown="handleButton(event)" onpointerup="handleButton(event)"
+            style="width: 150px; height: 150px; left: 100px; top: 600px"></button>
+        <input id="slider" type="range" min="0" max="1" step=".01" oninput="handleSlider(event)"
+            style="width: 300px; rotate: 0deg"/>
+
+        <!-- Try creating more interactive elements here! Be sure to give each one an id and callback and style its width, height and position-->
+    </body>
+</html>

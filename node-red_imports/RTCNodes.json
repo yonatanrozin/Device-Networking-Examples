@@ -1,0 +1,116 @@
+[
+    {
+        "id": "718cdf1f953c881f",
+        "type": "websocket in",
+        "z": "0c44cd06203c0665",
+        "name": "",
+        "server": "8c187e8c39d6e69c",
+        "client": "",
+        "x": 150,
+        "y": 640,
+        "wires": [
+            [
+                "b11c542b6322d8db"
+            ]
+        ]
+    },
+    {
+        "id": "96b2f436f577512e",
+        "type": "websocket out",
+        "z": "0c44cd06203c0665",
+        "name": "",
+        "server": "baa12a40b1b08f65",
+        "client": "",
+        "x": 570,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "b11c542b6322d8db",
+        "type": "change",
+        "z": "0c44cd06203c0665",
+        "name": "",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "_session",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 640,
+        "wires": [
+            [
+                "96b2f436f577512e"
+            ]
+        ]
+    },
+    {
+        "id": "021ae013d4b98832",
+        "type": "websocket in",
+        "z": "0c44cd06203c0665",
+        "name": "",
+        "server": "baa12a40b1b08f65",
+        "client": "",
+        "x": 150,
+        "y": 700,
+        "wires": [
+            [
+                "c37c823d07d94088"
+            ]
+        ]
+    },
+    {
+        "id": "c37c823d07d94088",
+        "type": "change",
+        "z": "0c44cd06203c0665",
+        "name": "",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "_session",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 700,
+        "wires": [
+            [
+                "1d6827817c6e81f9"
+            ]
+        ]
+    },
+    {
+        "id": "1d6827817c6e81f9",
+        "type": "websocket out",
+        "z": "0c44cd06203c0665",
+        "name": "",
+        "server": "8c187e8c39d6e69c",
+        "client": "",
+        "x": 570,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "8c187e8c39d6e69c",
+        "type": "websocket-listener",
+        "path": "/RTC_sender",
+        "wholemsg": "false"
+    },
+    {
+        "id": "baa12a40b1b08f65",
+        "type": "websocket-listener",
+        "path": "/RTC_receiver",
+        "wholemsg": "false"
+    }
+]

@@ -137,3 +137,9 @@ dist
 
 certs/*
 !certs/.gitkeep
+
+*.pdf
+receivers/Backup
+receivers/*.*.toe
+*.backup
+nodes.json
