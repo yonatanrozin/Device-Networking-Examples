@@ -29,11 +29,11 @@
             }
 
             //send an integer (for booleans use Number(boolean))
-            async function onButton(event) { 
+            async function handleButton(event) { 
                 BLECharacteristics[0]?.writeValueWithoutResponse(new Uint8Array([event.buttons]));
             }
             //send a float
-            async function onSlider(event) { 
+            async function handleSlider(event) { 
                 const buffer = new ArrayBuffer(4);
                 const view = new DataView(buffer);
                 view.setFloat32(0, Number(event.target.value), true);
@@ -43,11 +43,9 @@
     </head>
     <body>
         <h1 id="ble-message" onclick="connectToBle()">TAP SCREEN TO CONNECT TO BLE DEVICE</h1>
-        <div id="pad" onpointermove="handlePad(event)" 
-            style="width: 500px; height: 500px; left: 50px; top: 50px;"></div>
-        <button id="button" onpointerdown="onButton(event)" onpointerup="onButton(event)"
+        <button id="button" onpointerdown="handleButton(event)" onpointerup="handleButton(event)"
             style="width: 150px; height: 150px; left: 100px; top: 600px"></button>
-        <input id="slider" type="range" min="0" max="1" step=".01" oninput="onSlider(event)"
-            style="width: 300px; rotate: 0deg"/>
+        <input id="slider" type="range" min="0" max="1" step=".01" oninput="handleSlider(event)"
+            style="top: 20px; left: 150px; width: 300px; rotate: 0deg; scale: 2"/>
     </body>
 </html>
