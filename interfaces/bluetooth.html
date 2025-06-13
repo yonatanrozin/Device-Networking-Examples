@@ -17,7 +17,7 @@
             
             window.BLECharacteristics = [];
 
-            async function connectToBle() {
+            async function connectToBLE() {
                 if (await BLE.connect(serviceUuid, onBLEConnect))
                     document.getElementById("ble-message")?.remove();
             }
@@ -26,23 +26,30 @@
                 if (error) console.log("error: ", error);
                 console.log("characteristics: ", characteristics);
                 BLECharacteristics = characteristics;
+                //setup callback on updated BLE characteristic value 
+                if (BLECharacteristics[2]) BLE.startNotifications(BLECharacteristics[2], onBLEWritten);
             }
 
             //send an integer (for booleans use Number(boolean))
-            async function handleButton(event) { 
+            function handleButton(event) { 
                 BLECharacteristics[0]?.writeValueWithoutResponse(new Uint8Array([event.buttons]));
             }
             //send a float
-            async function handleSlider(event) { 
+            function handleSlider(event) { 
                 const buffer = new ArrayBuffer(4);
                 const view = new DataView(buffer);
                 view.setFloat32(0, Number(event.target.value), true);
                 BLECharacteristics[1]?.writeValueWithoutResponse(buffer);
             }
+
+            function onBLEWritten(value) {
+                document.querySelector("#ble-value").innerHTML = "BLE value written! - " + String(value);
+            }
         </script>
     </head>
     <body>
-        <h1 id="ble-message" onclick="connectToBle()">TAP SCREEN TO CONNECT TO BLE DEVICE</h1>
+        <h1 id="ble-message" onclick="connectToBLE()">TAP SCREEN TO CONNECT TO BLE DEVICE</h1>
+        <h2 id="ble-value" style="top: 300px"></h2>
         <button id="button" onpointerdown="handleButton(event)" onpointerup="handleButton(event)"
             style="width: 150px; height: 150px; left: 100px; top: 600px"></button>
         <input id="slider" type="range" min="0" max="1" step=".01" oninput="handleSlider(event)"
