@@ -1,0 +1,132 @@
+[
+    {
+        "id": "5a793f439ce54759",
+        "type": "http in",
+        "z": "51eb1e1f32a05376",
+        "name": "",
+        "url": "/page*",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 260,
+        "wires": [
+            [
+                "e6484fcecf181dc4"
+            ]
+        ]
+    },
+    {
+        "id": "13ba7ca30d425f07",
+        "type": "http response",
+        "z": "51eb1e1f32a05376",
+        "name": "http response",
+        "statusCode": "",
+        "headers": {},
+        "x": 520,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "e6484fcecf181dc4",
+        "type": "static",
+        "z": "51eb1e1f32a05376",
+        "name": "",
+        "folder": "interfaces",
+        "x": 310,
+        "y": 260,
+        "wires": [
+            [
+                "13ba7ca30d425f07"
+            ]
+        ]
+    },
+    {
+        "id": "98c11d144289ded6",
+        "type": "websocket in",
+        "z": "51eb1e1f32a05376",
+        "name": "websocket in",
+        "server": "8916b868c8e5797e",
+        "client": "",
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [
+                "d860e440cc8bfca0"
+            ]
+        ]
+    },
+    {
+        "id": "d860e440cc8bfca0",
+        "type": "json",
+        "z": "51eb1e1f32a05376",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 250,
+        "y": 320,
+        "wires": [
+            [
+                "70e9da2d01985865"
+            ]
+        ]
+    },
+    {
+        "id": "df144c4bc7a06312",
+        "type": "udp out",
+        "z": "51eb1e1f32a05376",
+        "name": "",
+        "addr": "10.23.10.197",
+        "iface": "",
+        "port": "1234",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 490,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a4fd19eabf4a2e24",
+        "type": "osc",
+        "z": "51eb1e1f32a05376",
+        "name": "",
+        "path": "",
+        "metadata": false,
+        "x": 310,
+        "y": 380,
+        "wires": [
+            [
+                "df144c4bc7a06312"
+            ]
+        ]
+    },
+    {
+        "id": "70e9da2d01985865",
+        "type": "function",
+        "z": "51eb1e1f32a05376",
+        "name": "Make OSC Bundle",
+        "func": "msg.payload = {packets: context.getOSCMsgs(msg.payload)}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "context.getOSCMsgs = (obj, path = \"/\" + msg._session.id) => {\n    const msgs = [];\n    for (const key in obj) {\n        const keyPath = path ? `${path}/${key}` : key;\n        if (Array.isArray(obj[key])) msgs.push({ address: keyPath, args: obj[key]})//context.getOSCArgs(obj[key]) });\n        else if (typeof obj[key] === \"object\") msgs.push(...context.getOSCMsgs(obj[key], keyPath));\n        else msgs.push({ address: keyPath, args: context.getOSCArgs(obj[key]) });\n    }\n    return msgs;\n}\n\ncontext.getOSCArgs = (args) => {\n    if (!Array.isArray(args)) args = [args];\n    return args.map((value) => {\n        const type = { \"boolean\": \"i\", \"number\": \"f\", \"string\": \"s\" }[typeof value];\n        return { type, value };\n    });\n}",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 320,
+        "wires": [
+            [
+                "a4fd19eabf4a2e24"
+            ]
+        ]
+    },
+    {
+        "id": "8916b868c8e5797e",
+        "type": "websocket-listener",
+        "path": "/messages",
+        "wholemsg": "false"
+    }
+]
