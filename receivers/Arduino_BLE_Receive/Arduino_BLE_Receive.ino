@@ -66,7 +66,7 @@ void setup() {
   BLE.addService(ble);
   BLE.advertise();
 
-  Serial.println("Bluetooth® device active, waiting for connections...");
+  Serial.println("BLE device active, waiting for connections...");
   
 }
 
@@ -81,6 +81,8 @@ void loop(){
   
   if (characteristic2.written()) {
     float val = characteristic2.value(); 
+    Serial.print("Slider: ");
+    Serial.println(val);
     //assuming an input between 0 and 1
     float servoVal = val * 180;
     servo.write(servoVal);

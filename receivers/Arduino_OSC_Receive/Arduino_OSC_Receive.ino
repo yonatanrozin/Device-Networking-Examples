@@ -35,12 +35,10 @@ void setup() {
 
   Serial.println("Connecting to WiFi.");
   while (status != WL_CONNECTED) {
-
     Serial.print("Attempting to connect to network ");
     Serial.println(WIFI_SSID);      
     status = WiFi.begin(WIFI_SSID, WIFI_PASS);
     delay(1000);
-
   }
   Serial.print("WiFi connected.\nIP address: ");
   Serial.println(WiFi.localIP());
@@ -68,6 +66,10 @@ void getPad(OSCMessage &msg){
 
   float x = msg.getFloat(0); //get first argument
   float y = msg.getFloat(1); //get second argument
+  Serial.print("Pad: ");
+  Serial.print(x);
+  Serial.print(', ');
+  Serial.println(y);
   x = map(x, 0, 600, 10, 170); //scale range of values to a different range
   servo.write(x);
 }
