@@ -1,0 +1,50 @@
+<!-- Code based heavily on code snippets provided by Teachable Machine -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mobile Teachable Machine</title>
+        <link rel="stylesheet" href="./styles.css" >
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+        <script type="text/javascript">
+            const socket = new WebSocket("/messages");
+            const data = {};
+
+            let model, webcam, labelContainer, maxPredictions;
+
+            // Load the image model and setup the webcam
+            async function init() {
+                try {
+                    model = await tmImage.load("./tm_model/model.json", "./tm_model/metadata.json");
+                    maxPredictions = model.getTotalClasses();
+                    const flipWebcam = true; 
+                    webcam = new tmImage.Webcam(200, 200, flipWebcam); 
+                    await webcam.setup(); 
+                    await webcam.play();
+                    window.requestAnimationFrame(loop);
+                    document.querySelector("#ml-message")?.remove();
+                } catch (e) {window.alert(e)}
+            }
+
+            async function loop() {
+                webcam.update(); // update the webcam frame
+                await predict();
+                window.requestAnimationFrame(loop);
+            }
+
+            async function predict() {
+                const prediction = await model.predict(webcam.canvas);
+                for (let i = 0; i < maxPredictions; i++) {
+                    data[prediction[i].className] = Number(prediction[i].probability.toFixed(2));
+                }
+                socket.send(JSON.stringify(data));
+            }
+        </script>
+
+        <h1 id="ml-message" onclick="init()">Tap screen to enable camera access + ML model (then wait a while)</h1>
+
+    </body>
+</html>
