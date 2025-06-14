@@ -10,7 +10,9 @@
 */
 
 #include <WiFiNINA.h> //you may need <WiFi.h> instead, depending on your board
-#include <OSCBundle.h>
+
+#include <OSCBundle.h> //not included in IDE by default. Install "OSC" package by Adrian Freed from library manager
+
 #include <Servo.h>
 
 //these are case-sensitive!!
